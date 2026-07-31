@@ -87,10 +87,11 @@ export async function updateAccount(input: {
 }) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-  const patch: Record<string, unknown> = {};
+  const patch: { nama?: string; status?: string; must_change_password?: boolean } = {};
   if (input.nama !== undefined) patch.nama = input.nama.trim();
   if (input.status !== undefined) patch.status = input.status;
   if (input.password) patch.must_change_password = true;
+
 
   if (Object.keys(patch).length > 0) {
     const { error } = await supabaseAdmin.from("profiles").update(patch).eq("id", input.userId);
