@@ -24,9 +24,8 @@ type AuthState = {
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
-export const USERNAME_DOMAIN = "kino-helpdesk.local";
-export const usernameToEmail = (username: string) =>
-  `${username.trim().toLowerCase()}@${USERNAME_DOMAIN}`;
+export { USERNAME_DOMAIN, usernameToEmail } from "./username";
+
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
