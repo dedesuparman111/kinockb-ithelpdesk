@@ -14,16 +14,166 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          must_change_password: boolean
+          nama: string
+          status: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          must_change_password?: boolean
+          nama: string
+          status?: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          must_change_password?: boolean
+          nama?: string
+          status?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      settings: {
+        Row: {
+          categories: string
+          departments: string
+          id: number
+          it_phone: string | null
+          login_bg_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          categories?: string
+          departments?: string
+          id?: number
+          it_phone?: string | null
+          login_bg_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          categories?: string
+          departments?: string
+          id?: number
+          it_phone?: string | null
+          login_bg_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tickets: {
+        Row: {
+          action: string | null
+          created_at: string
+          created_by: string | null
+          creator: string | null
+          departement: string
+          description: string
+          ejob: string
+          id: string
+          kategori: string
+          keterangan: string | null
+          lokasi: string | null
+          nama: string
+          no_wa: string | null
+          status: string
+          subject: string
+          tanggal: string
+          tanggal_selesai: string | null
+          type_ticket: string
+          updated_at: string
+        }
+        Insert: {
+          action?: string | null
+          created_at?: string
+          created_by?: string | null
+          creator?: string | null
+          departement: string
+          description: string
+          ejob: string
+          id?: string
+          kategori: string
+          keterangan?: string | null
+          lokasi?: string | null
+          nama: string
+          no_wa?: string | null
+          status?: string
+          subject: string
+          tanggal?: string
+          tanggal_selesai?: string | null
+          type_ticket?: string
+          updated_at?: string
+        }
+        Update: {
+          action?: string | null
+          created_at?: string
+          created_by?: string | null
+          creator?: string | null
+          departement?: string
+          description?: string
+          ejob?: string
+          id?: string
+          kategori?: string
+          keterangan?: string | null
+          lokasi?: string | null
+          nama?: string
+          no_wa?: string | null
+          status?: string
+          subject?: string
+          tanggal?: string
+          tanggal_selesai?: string | null
+          type_ticket?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "Administrator" | "Petugas IT" | "User Biasa" | "User Public"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +300,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["Administrator", "Petugas IT", "User Biasa", "User Public"],
+    },
   },
 } as const
