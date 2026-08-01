@@ -68,7 +68,7 @@ function TicketDetailPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { profile, role } = useAuth();
+  const { role } = useAuth();
 
   const { data: ticket, isLoading } = useQuery({
     queryKey: ["ticket", id],
