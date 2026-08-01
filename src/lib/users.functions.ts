@@ -75,3 +75,14 @@ export const adminDeleteUser = createServerFn({ method: "POST" })
     }
     return deleteAccount(data.userId);
   });
+
+export const ensurePublicAccountFn = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) =>
+    z.object({ password: z.string().min(6).max(72) }).parse(data),
+  )
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const { ensurePublicAccount } = await import("./users.server");
+    return ensurePublicAccount(data.password);
+  });

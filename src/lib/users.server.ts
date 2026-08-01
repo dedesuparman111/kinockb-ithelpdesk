@@ -122,3 +122,40 @@ export async function deleteAccount(userId: string) {
   if (error) throw new Error(error.message);
   return { ok: true as const };
 }
+
+export const PUBLIC_USERNAME = "user";
+
+export async function ensurePublicAccount(password: string) {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+  const { data: existing } = await supabaseAdmin
+    .from("profiles")
+    .select("id")
+    .eq("username", PUBLIC_USERNAME)
+    .maybeSingle();
+
+  if (!existing) {
+    await createAccount({
+      username: PUBLIC_USERNAME,
+      nama: "Akun Public",
+      password,
+      role: "User Public",
+      mustChangePassword: false,
+    });
+    return { created: true as const, username: PUBLIC_USERNAME };
+  }
+
+  await updateAccount({
+    userId: existing.id,
+    nama: "Akun Public",
+    role: "User Public",
+    status: "Active",
+    password,
+  });
+  await supabaseAdmin
+    .from("profiles")
+    .update({ must_change_password: false })
+    .eq("id", existing.id);
+
+  return { created: false as const, username: PUBLIC_USERNAME };
+}
