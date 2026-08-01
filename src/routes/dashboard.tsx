@@ -44,7 +44,7 @@ function DashboardPage() {
   const { data: tickets = [] } = useQuery({ queryKey: ["tickets"], queryFn: fetchTickets });
   const { data: settings } = useQuery({ queryKey: ["settings"], queryFn: fetchSettings });
 
-  const mine = isStaff(role) ? tickets : tickets.filter((t) => t.created_by === profile?.id);
+  const mine = tickets;
 
   const stats = [
     {

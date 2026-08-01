@@ -57,7 +57,7 @@ function TicketListPage() {
   const [status, setStatus] = useState(ALL);
   const [department, setDepartment] = useState(ALL);
   const [category, setCategory] = useState(ALL);
-  const [scope, setScope] = useState(isStaff(role) ? "all" : "mine");
+  const [scope, setScope] = useState("all");
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();

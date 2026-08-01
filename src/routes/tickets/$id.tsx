@@ -68,7 +68,7 @@ function TicketDetailPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { profile, role } = useAuth();
+  const { role } = useAuth();
 
   const { data: ticket, isLoading } = useQuery({
     queryKey: ["ticket", id],
@@ -96,9 +96,7 @@ function TicketDetailPage() {
   }, [ticket]);
 
   const staff = isStaff(role);
-  const canEdit =
-    role !== "User Public" &&
-    (staff || (ticket?.created_by === profile?.id && ticket?.status === "Open"));
+  const canEdit = staff;
 
   const handleSave = async () => {
     if (!ticket) return;
