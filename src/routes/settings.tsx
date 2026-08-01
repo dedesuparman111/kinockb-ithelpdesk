@@ -167,6 +167,62 @@ function SettingsPage() {
             </div>
           </div>
 
+          <div className="surface-card p-6">
+            <h3 className="text-base font-bold">Akun Public Bersama</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Satu akun bersama (username <span className="font-semibold">user</span>) agar
+              karyawan tidak perlu membuat banyak akun. Akun ini hanya bisa{" "}
+              <span className="font-semibold">membuat tiket dan melihat</span> — tidak bisa
+              mengubah tiket, mengelola user, atau mengubah pengaturan.
+            </p>
+            <div className="mt-5 flex flex-wrap items-end gap-3">
+              <div className="w-full max-w-xs space-y-2">
+                <Label htmlFor="public_password">Password akun public</Label>
+                <Input
+                  id="public_password"
+                  type="text"
+                  value={publicPassword}
+                  onChange={(e) => setPublicPassword(e.target.value)}
+                />
+              </div>
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={publicBusy}
+                onClick={async () => {
+                  if (publicPassword.trim().length < 6) {
+                    toast.error("Password minimal 6 karakter.");
+                    return;
+                  }
+                  setPublicBusy(true);
+                  try {
+                    const res = await ensurePublicAccountFn({
+                      data: { password: publicPassword.trim() },
+                    });
+                    toast.success(
+                      res.created
+                        ? "Akun public dibuat (username: user)."
+                        : "Password akun public diperbarui.",
+                    );
+                  } catch (error) {
+                    toast.error(
+                      error instanceof Error ? error.message : "Gagal menyiapkan akun public.",
+                    );
+                  } finally {
+                    setPublicBusy(false);
+                  }
+                }}
+              >
+                {publicBusy ? (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                ) : (
+                  <UserPlus className="mr-2 h-4 w-4" />
+                )}
+                Buat / Perbarui Akun Public
+              </Button>
+            </div>
+          </div>
+
           <div className="flex justify-end">
             <Button type="submit" disabled={busy}>
               {busy ? (
