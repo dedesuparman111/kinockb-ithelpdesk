@@ -96,7 +96,9 @@ function TicketDetailPage() {
   }, [ticket]);
 
   const staff = isStaff(role);
-  const canEdit = staff || (ticket?.created_by === profile?.id && ticket?.status === "Open");
+  const canEdit =
+    role !== "User Public" &&
+    (staff || (ticket?.created_by === profile?.id && ticket?.status === "Open"));
 
   const handleSave = async () => {
     if (!ticket) return;
