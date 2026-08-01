@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS tickets_update_own_open ON public.tickets;
