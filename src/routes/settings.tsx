@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Save } from "lucide-react";
+import { Loader2, Save, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { fetchSettings, splitList } from "@/lib/helpdesk";
+import { ensurePublicAccountFn } from "@/lib/users.functions";
 
 export const Route = createFileRoute("/settings")({
   head: () => ({
@@ -47,6 +48,8 @@ function SettingsPage() {
     login_bg_url: "",
   });
   const [busy, setBusy] = useState(false);
+  const [publicPassword, setPublicPassword] = useState("kino26");
+  const [publicBusy, setPublicBusy] = useState(false);
 
   useEffect(() => {
     if (settings) {
