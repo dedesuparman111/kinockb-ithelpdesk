@@ -12,6 +12,14 @@ import {
 } from "lucide-react";
 import { useAuth, isStaff, type AppRole } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
 const navItems: { to: string; label: string; icon: typeof Ticket; roles?: AppRole[] }[] = [
