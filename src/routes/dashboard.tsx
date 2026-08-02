@@ -2,12 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   Activity,
+  BookOpen,
   CheckCircle2,
   Clock,
   PlusCircle,
   Inbox,
   MessageCircle,
 } from "lucide-react";
+
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -94,8 +96,34 @@ function DashboardPage() {
         </Button>
       }
     >
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {stats.map((stat) => (
+      <div className="grid auto-rows-[minmax(0,auto)] gap-4 lg:grid-cols-4">
+        <div className="brand-gradient relative overflow-hidden rounded-2xl p-6 text-primary-foreground shadow-[var(--shadow-elevated)] lg:col-span-2 lg:row-span-2">
+          <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10" />
+          <div className="absolute -bottom-16 -left-6 h-44 w-44 rounded-full bg-black/10" />
+          <div className="relative">
+            <p className="text-sm font-medium opacity-90">Total Tiket</p>
+            <p className="mt-2 text-6xl font-extrabold tabular-nums leading-none">{mine.length}</p>
+            <p className="mt-3 max-w-sm text-sm opacity-90">
+              {isStaff(role)
+                ? "Seluruh permintaan layanan IT Kino Cikembar."
+                : "Semua tiket helpdesk yang tercatat."}
+            </p>
+            <div className="mt-6 grid grid-cols-3 gap-3">
+              {stats.slice(1).map((stat) => (
+                <div key={stat.label} className="rounded-xl bg-white/15 p-3 backdrop-blur">
+                  <stat.icon className="h-4 w-4 opacity-90" />
+                  <p className="mt-2 text-2xl font-bold tabular-nums leading-none">{stat.value}</p>
+                  <p className="mt-1 text-[11px] font-medium opacity-90">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+            <Button asChild variant="secondary" size="sm" className="mt-6">
+              <Link to="/tickets">Lihat semua tiket</Link>
+            </Button>
+          </div>
+        </div>
+
+        {stats.slice(1).map((stat) => (
           <div key={stat.label} className="surface-card p-5">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
@@ -106,10 +134,32 @@ function DashboardPage() {
             <p className="mt-3 text-3xl font-extrabold tabular-nums">{stat.value}</p>
           </div>
         ))}
-      </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
-        <div className="surface-card overflow-hidden">
+        <div className="surface-card p-5 lg:col-span-2 lg:row-span-2">
+          <h2 className="text-base font-bold">Tiket per Kategori</h2>
+          {byCategory.length === 0 ? (
+            <p className="mt-4 text-sm text-muted-foreground">Belum ada data.</p>
+          ) : (
+            <ul className="mt-4 space-y-3">
+              {byCategory.map(([category, count]) => (
+                <li key={category}>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium">{category}</span>
+                    <span className="tabular-nums text-muted-foreground">{count}</span>
+                  </div>
+                  <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-primary"
+                      style={{ width: `${(count / maxCategory) * 100}%` }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="surface-card overflow-hidden lg:col-span-2 lg:row-span-2">
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
             <h2 className="text-base font-bold">Tiket Terbaru</h2>
             <Button asChild variant="ghost" size="sm">
@@ -145,48 +195,35 @@ function DashboardPage() {
           )}
         </div>
 
-        <div className="space-y-6">
-          <div className="surface-card p-5">
-            <h2 className="text-base font-bold">Tiket per Kategori</h2>
-            {byCategory.length === 0 ? (
-              <p className="mt-4 text-sm text-muted-foreground">Belum ada data.</p>
-            ) : (
-              <ul className="mt-4 space-y-3">
-                {byCategory.map(([category, count]) => (
-                  <li key={category}>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="font-medium">{category}</span>
-                      <span className="tabular-nums text-muted-foreground">{count}</span>
-                    </div>
-                    <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-muted">
-                      <div
-                        className="h-full rounded-full bg-primary"
-                        style={{ width: `${(count / maxCategory) * 100}%` }}
-                      />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+        <div className="surface-card p-5 lg:col-span-2">
+          <h2 className="text-base font-bold">Butuh bantuan cepat?</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Hubungi tim IT Cikembar langsung melalui WhatsApp untuk kendala mendesak.
+          </p>
+          <Button asChild variant="outline" className="mt-4 w-full">
+            <a
+              href={waLink(settings?.it_phone, "Halo Tim IT Kino Cikembar, saya butuh bantuan.")}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <MessageCircle className="mr-2 h-4 w-4" /> Chat Tim IT
+            </a>
+          </Button>
+        </div>
 
-          <div className="surface-card p-5">
-            <h2 className="text-base font-bold">Butuh bantuan cepat?</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Hubungi tim IT Cikembar langsung melalui WhatsApp untuk kendala mendesak.
-            </p>
-            <Button asChild variant="outline" className="mt-4 w-full">
-              <a
-                href={waLink(settings?.it_phone, "Halo Tim IT Kino Cikembar, saya butuh bantuan.")}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <MessageCircle className="mr-2 h-4 w-4" /> Chat Tim IT
-              </a>
-            </Button>
-          </div>
+        <div className="surface-card p-5 lg:col-span-2">
+          <h2 className="text-base font-bold">Baca Al-Quran</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            114 surat lengkap dengan terjemahan, audio murottal, dan tafsir Indonesia.
+          </p>
+          <Button asChild variant="outline" className="mt-4 w-full">
+            <Link to="/quran">
+              <BookOpen className="mr-2 h-4 w-4" /> Buka Al-Quran
+            </Link>
+          </Button>
         </div>
       </div>
+
     </AppShell>
   );
 }
