@@ -9,6 +9,7 @@ import {
   LogOut,
   Headset,
   BookOpen,
+  Menu,
 } from "lucide-react";
 import { useAuth, isStaff, type AppRole } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
@@ -62,6 +63,7 @@ export function AppShell({
   }
 
   const visible = navItems.filter((item) => !item.roles || (role && item.roles.includes(role)));
+  const tabs = navItems.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-background lg:flex">
