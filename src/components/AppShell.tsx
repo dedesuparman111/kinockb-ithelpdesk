@@ -8,6 +8,7 @@ import {
   Settings as SettingsIcon,
   LogOut,
   Headset,
+  BookOpen,
 } from "lucide-react";
 import { useAuth, isStaff, type AppRole } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
@@ -17,9 +18,11 @@ const navItems: { to: string; label: string; icon: typeof Ticket; roles?: AppRol
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/tickets", label: "Daftar Tiket", icon: Ticket },
   { to: "/tickets/new", label: "Buat Tiket", icon: PlusCircle },
+  { to: "/quran", label: "Baca Quran", icon: BookOpen },
   { to: "/users", label: "Manajemen User", icon: Users, roles: ["Administrator"] },
   { to: "/settings", label: "Pengaturan", icon: SettingsIcon, roles: ["Administrator"] },
 ];
+
 
 export function AppShell({
   title,
