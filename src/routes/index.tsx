@@ -139,15 +139,18 @@ function LoginPage() {
 
       <section className="flex items-center justify-center px-5 py-12 sm:px-10">
         <div className="w-full max-w-md">
-          <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <span className="brand-gradient flex h-11 w-11 items-center justify-center rounded-xl">
-              <Headset className="h-5 w-5 text-primary-foreground" />
-            </span>
+          <div className="mb-8 flex flex-col items-center gap-3 text-center lg:hidden">
+            <img
+              src={LOGO_URL}
+              alt="Logo Kino Indonesia"
+              className="h-14 w-auto object-contain"
+            />
             <div>
               <p className="text-base font-extrabold">Kino IT Helpdesk</p>
               <p className="text-xs text-muted-foreground">Plant Cikembar</p>
             </div>
           </div>
+
 
           <h1 className="text-3xl font-extrabold">Masuk ke akun Anda</h1>
           <p className="mt-2 text-sm text-muted-foreground">
