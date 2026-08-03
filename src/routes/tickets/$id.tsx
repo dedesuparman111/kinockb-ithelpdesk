@@ -203,7 +203,7 @@ function TicketDetailPage() {
             <dl className="mt-6 grid gap-4 border-t border-border pt-6 sm:grid-cols-2">
               {[
                 ["Pemohon", ticket.nama],
-                ["No. WhatsApp", ticket.no_wa ?? "-"],
+                ["No. WhatsApp", staff ? (contact ?? "-") : "Hanya tim IT"],
                 ["Departemen", ticket.departement],
                 ["Lokasi", ticket.lokasi ?? "-"],
                 ["Kategori", ticket.kategori],
@@ -323,11 +323,11 @@ function TicketDetailPage() {
                     <MessageCircle className="mr-2 h-4 w-4" /> Chat Tim IT
                   </a>
                 </Button>
-                {staff && ticket.no_wa ? (
+                {staff && contact ? (
                   <Button asChild variant="outline">
                     <a
                       href={waLink(
-                        ticket.no_wa.startsWith("0") ? `62${ticket.no_wa.slice(1)}` : ticket.no_wa,
+                        contact.startsWith("0") ? `62${contact.slice(1)}` : contact,
                         `Halo ${ticket.nama}, terkait tiket ${ticket.ejob}.`,
                       )}
                       target="_blank"
