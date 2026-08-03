@@ -61,9 +61,13 @@ export const Route = createFileRoute("/tickets/$id")({
 });
 
 async function fetchTicket(id: string) {
-  const { data, error } = await supabase.from("tickets").select("*").eq("id", id).maybeSingle();
+  const { data, error } = await supabase
+    .from("tickets")
+    .select(TICKET_COLUMNS)
+    .eq("id", id)
+    .maybeSingle();
   if (error) throw new Error(error.message);
-  return (data as Ticket) ?? null;
+  return (data as unknown as Ticket) ?? null;
 }
 
 function TicketDetailPage() {
@@ -77,6 +81,11 @@ function TicketDetailPage() {
     queryFn: () => fetchTicket(id),
   });
   const { data: settings } = useQuery({ queryKey: ["settings"], queryFn: fetchSettings });
+  const { data: contact } = useQuery({
+    queryKey: ["ticket-contact", id],
+    queryFn: () => fetchTicketContact(id),
+    enabled: isStaff(role),
+  });
 
   const [busy, setBusy] = useState(false);
   const [handling, setHandling] = useState({
