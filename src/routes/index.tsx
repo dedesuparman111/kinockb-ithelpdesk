@@ -5,7 +5,7 @@ import { Headset, Loader2, LockKeyhole, User2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, usernameToEmail } from "@/lib/auth";
-import { fetchSettings } from "@/lib/helpdesk";
+import { fetchPublicSettings } from "@/lib/helpdesk";
 import { registerUser } from "@/lib/users.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,7 +36,10 @@ function LoginPage() {
   const { profile, loading, refresh } = useAuth();
   const [busy, setBusy] = useState(false);
 
-  const { data: settings } = useQuery({ queryKey: ["settings"], queryFn: fetchSettings });
+  const { data: settings } = useQuery({
+    queryKey: ["public-settings"],
+    queryFn: fetchPublicSettings,
+  });
 
   const [loginForm, setLoginForm] = useState({ username: "", password: "" });
   const [registerForm, setRegisterForm] = useState({ username: "", nama: "", password: "" });

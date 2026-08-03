@@ -16,7 +16,7 @@ export type Ticket = {
   ejob: string;
   tanggal: string;
   nama: string;
-  no_wa: string | null;
+  no_wa?: string | null;
   departement: string;
   lokasi: string | null;
   kategori: string;
@@ -32,6 +32,18 @@ export type Ticket = {
   created_at: string;
   updated_at: string;
 };
+
+// no_wa is intentionally excluded: contact numbers are staff-only and are
+// fetched through the ticket_contact() security-definer function.
+export const TICKET_COLUMNS =
+  "id, ejob, tanggal, nama, departement, lokasi, kategori, type_ticket, subject, description, status, tanggal_selesai, action, keterangan, creator, created_by, created_at, updated_at";
+
+export async function fetchTicketContact(ticketId: string): Promise<string | null> {
+  const { data, error } = await supabase.rpc("ticket_contact", { _ticket_id: ticketId });
+  if (error) return null;
+  return (data as string | null) ?? null;
+}
+
 
 export type Settings = {
   id: number;
@@ -80,14 +92,29 @@ export async function fetchSettings(): Promise<Settings | null> {
   return (data as Settings) ?? null;
 }
 
+// Signed-out visitors may only read the login background image.
+export async function fetchPublicSettings(): Promise<Pick<
+  Settings,
+  "id" | "login_bg_url"
+> | null> {
+  const { data, error } = await supabase
+    .from("settings")
+    .select("id, login_bg_url")
+    .eq("id", 1)
+    .maybeSingle();
+  if (error) return null;
+  return data ?? null;
+}
+
 export async function fetchTickets(): Promise<Ticket[]> {
   const { data, error } = await supabase
     .from("tickets")
-    .select("*")
+    .select(TICKET_COLUMNS)
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
-  return (data ?? []) as Ticket[];
+  return (data ?? []) as unknown as Ticket[];
 }
+
 
 export async function generateEjob(): Promise<string> {
   const now = new Date();

@@ -31,10 +31,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth, isStaff } from "@/lib/auth";
 import {
   fetchSettings,
+  fetchTicketContact,
   formatDate,
   statusStyles,
   typeStyles,
   waLink,
+  TICKET_COLUMNS,
   TICKET_STATUSES,
   type Ticket,
 } from "@/lib/helpdesk";
@@ -59,9 +61,13 @@ export const Route = createFileRoute("/tickets/$id")({
 });
 
 async function fetchTicket(id: string) {
-  const { data, error } = await supabase.from("tickets").select("*").eq("id", id).maybeSingle();
+  const { data, error } = await supabase
+    .from("tickets")
+    .select(TICKET_COLUMNS)
+    .eq("id", id)
+    .maybeSingle();
   if (error) throw new Error(error.message);
-  return (data as Ticket) ?? null;
+  return (data as unknown as Ticket) ?? null;
 }
 
 function TicketDetailPage() {
@@ -75,6 +81,11 @@ function TicketDetailPage() {
     queryFn: () => fetchTicket(id),
   });
   const { data: settings } = useQuery({ queryKey: ["settings"], queryFn: fetchSettings });
+  const { data: contact } = useQuery({
+    queryKey: ["ticket-contact", id],
+    queryFn: () => fetchTicketContact(id),
+    enabled: isStaff(role),
+  });
 
   const [busy, setBusy] = useState(false);
   const [handling, setHandling] = useState({
@@ -192,7 +203,7 @@ function TicketDetailPage() {
             <dl className="mt-6 grid gap-4 border-t border-border pt-6 sm:grid-cols-2">
               {[
                 ["Pemohon", ticket.nama],
-                ["No. WhatsApp", ticket.no_wa ?? "-"],
+                ["No. WhatsApp", staff ? (contact ?? "-") : "Hanya tim IT"],
                 ["Departemen", ticket.departement],
                 ["Lokasi", ticket.lokasi ?? "-"],
                 ["Kategori", ticket.kategori],
@@ -312,11 +323,11 @@ function TicketDetailPage() {
                     <MessageCircle className="mr-2 h-4 w-4" /> Chat Tim IT
                   </a>
                 </Button>
-                {staff && ticket.no_wa ? (
+                {staff && contact ? (
                   <Button asChild variant="outline">
                     <a
                       href={waLink(
-                        ticket.no_wa.startsWith("0") ? `62${ticket.no_wa.slice(1)}` : ticket.no_wa,
+                        contact.startsWith("0") ? `62${contact.slice(1)}` : contact,
                         `Halo ${ticket.nama}, terkait tiket ${ticket.ejob}.`,
                       )}
                       target="_blank"

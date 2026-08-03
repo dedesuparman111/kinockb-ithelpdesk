@@ -171,6 +171,7 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      ticket_contact: { Args: { _ticket_id: string }; Returns: string }
     }
     Enums: {
       app_role: "Administrator" | "Petugas IT" | "User Biasa" | "User Public"
