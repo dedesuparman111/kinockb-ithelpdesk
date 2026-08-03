@@ -16,7 +16,7 @@ export type Ticket = {
   ejob: string;
   tanggal: string;
   nama: string;
-  no_wa: string | null;
+  no_wa?: string | null;
   departement: string;
   lokasi: string | null;
   kategori: string;
@@ -32,6 +32,18 @@ export type Ticket = {
   created_at: string;
   updated_at: string;
 };
+
+// no_wa is intentionally excluded: contact numbers are staff-only and are
+// fetched through the ticket_contact() security-definer function.
+export const TICKET_COLUMNS =
+  "id, ejob, tanggal, nama, departement, lokasi, kategori, type_ticket, subject, description, status, tanggal_selesai, action, keterangan, creator, created_by, created_at, updated_at";
+
+export async function fetchTicketContact(ticketId: string): Promise<string | null> {
+  const { data, error } = await supabase.rpc("ticket_contact", { _ticket_id: ticketId });
+  if (error) return null;
+  return (data as string | null) ?? null;
+}
+
 
 export type Settings = {
   id: number;
