@@ -24,3 +24,21 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Deploy ke Vercel
+
+Project ini sudah siap dideploy ke Vercel (Nitro preset `vercel`, Build Output API v3).
+
+1. Import repo ke Vercel — `vercel.json` sudah mengatur build command (`npm run build:vercel`).
+2. Tambahkan Environment Variables di project Vercel:
+
+| Variable | Keterangan |
+| --- | --- |
+| `VITE_SUPABASE_URL` | URL project Supabase |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Publishable/anon key |
+| `VITE_SUPABASE_PROJECT_ID` | Project ref Supabase |
+| `SUPABASE_URL` | Sama dengan di atas (dipakai server function) |
+| `SUPABASE_PUBLISHABLE_KEY` | Sama dengan publishable key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (server-only, jangan diberi prefix `VITE_`) |
+
+3. Deploy. Untuk database baru di supabase.com, jalankan `supabase_schema.sql` lebih dulu di SQL Editor.
