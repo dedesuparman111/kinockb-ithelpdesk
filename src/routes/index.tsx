@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Headset, Loader2, LockKeyhole, User2 } from "lucide-react";
+import { Loader2, LockKeyhole, User2 } from "lucide-react";
+
+const LOGO_URL =
+  "https://res.cloudinary.com/dedtb3vnj/image/upload/v1782568576/kino_yrhkmc.png";
+
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth, usernameToEmail } from "@/lib/auth";
@@ -98,14 +102,15 @@ function LoginPage() {
         <div className="brand-gradient absolute inset-0 opacity-90 mix-blend-multiply" />
         <div className="relative flex h-full flex-col justify-between p-12 text-primary-foreground">
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-foreground/15 backdrop-blur">
-              <Headset className="h-5 w-5" />
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-foreground/95 p-2 backdrop-blur">
+              <img src={LOGO_URL} alt="Logo Kino Indonesia" className="h-full w-full object-contain" />
             </span>
             <div>
               <p className="text-base font-extrabold">Kino IT Helpdesk</p>
               <p className="text-sm opacity-80">Plant Cikembar</p>
             </div>
           </div>
+
 
           <div className="max-w-md">
             <h2 className="text-4xl font-extrabold leading-tight">
@@ -134,15 +139,18 @@ function LoginPage() {
 
       <section className="flex items-center justify-center px-5 py-12 sm:px-10">
         <div className="w-full max-w-md">
-          <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <span className="brand-gradient flex h-11 w-11 items-center justify-center rounded-xl">
-              <Headset className="h-5 w-5 text-primary-foreground" />
-            </span>
+          <div className="mb-8 flex flex-col items-center gap-3 text-center lg:hidden">
+            <img
+              src={LOGO_URL}
+              alt="Logo Kino Indonesia"
+              className="h-14 w-auto object-contain"
+            />
             <div>
               <p className="text-base font-extrabold">Kino IT Helpdesk</p>
               <p className="text-xs text-muted-foreground">Plant Cikembar</p>
             </div>
           </div>
+
 
           <h1 className="text-3xl font-extrabold">Masuk ke akun Anda</h1>
           <p className="mt-2 text-sm text-muted-foreground">
