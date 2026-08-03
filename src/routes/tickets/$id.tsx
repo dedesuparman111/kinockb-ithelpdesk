@@ -31,10 +31,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth, isStaff } from "@/lib/auth";
 import {
   fetchSettings,
+  fetchTicketContact,
   formatDate,
   statusStyles,
   typeStyles,
   waLink,
+  TICKET_COLUMNS,
   TICKET_STATUSES,
   type Ticket,
 } from "@/lib/helpdesk";
