@@ -92,14 +92,29 @@ export async function fetchSettings(): Promise<Settings | null> {
   return (data as Settings) ?? null;
 }
 
+// Signed-out visitors may only read the login background image.
+export async function fetchPublicSettings(): Promise<Pick<
+  Settings,
+  "id" | "login_bg_url"
+> | null> {
+  const { data, error } = await supabase
+    .from("settings")
+    .select("id, login_bg_url")
+    .eq("id", 1)
+    .maybeSingle();
+  if (error) return null;
+  return data ?? null;
+}
+
 export async function fetchTickets(): Promise<Ticket[]> {
   const { data, error } = await supabase
     .from("tickets")
-    .select("*")
+    .select(TICKET_COLUMNS)
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
-  return (data ?? []) as Ticket[];
+  return (data ?? []) as unknown as Ticket[];
 }
+
 
 export async function generateEjob(): Promise<string> {
   const now = new Date();
