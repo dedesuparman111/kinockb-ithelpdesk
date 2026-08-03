@@ -98,14 +98,15 @@ function LoginPage() {
         <div className="brand-gradient absolute inset-0 opacity-90 mix-blend-multiply" />
         <div className="relative flex h-full flex-col justify-between p-12 text-primary-foreground">
           <div className="flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary-foreground/15 backdrop-blur">
-              <Headset className="h-5 w-5" />
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-foreground/95 p-2 backdrop-blur">
+              <img src={LOGO_URL} alt="Logo Kino Indonesia" className="h-full w-full object-contain" />
             </span>
             <div>
               <p className="text-base font-extrabold">Kino IT Helpdesk</p>
               <p className="text-sm opacity-80">Plant Cikembar</p>
             </div>
           </div>
+
 
           <div className="max-w-md">
             <h2 className="text-4xl font-extrabold leading-tight">
