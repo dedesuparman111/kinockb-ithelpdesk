@@ -67,25 +67,8 @@ function LoginPage() {
     void navigate({ to: "/dashboard" });
   };
 
-  const handleRegister = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setBusy(true);
-    try {
-      await registerUser({ data: registerForm });
-      const { error } = await supabase.auth.signInWithPassword({
-        email: usernameToEmail(registerForm.username),
-        password: registerForm.password,
-      });
-      if (error) throw new Error(error.message);
-      await refresh();
-      toast.success("Akun berhasil dibuat.");
-      void navigate({ to: "/dashboard" });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Pendaftaran gagal.");
-    } finally {
-      setBusy(false);
-    }
-  };
+
+
 
   return (
     <div className="grid min-h-screen lg:grid-cols-[1.1fr_1fr]">
