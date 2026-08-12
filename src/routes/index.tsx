@@ -44,7 +44,7 @@ function LoginPage() {
   });
 
   const [loginForm, setLoginForm] = useState({ username: "", password: "" });
-  const [registerForm, setRegisterForm] = useState({ username: "", nama: "", password: "" });
+  
 
   useEffect(() => {
     if (!loading && profile) void navigate({ to: "/dashboard" });
