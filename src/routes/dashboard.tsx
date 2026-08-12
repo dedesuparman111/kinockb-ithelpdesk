@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   Activity,
-  BookOpen,
+  
   CheckCircle2,
   Clock,
   PlusCircle,
@@ -211,17 +211,6 @@ function DashboardPage() {
           </Button>
         </div>
 
-        <div className="surface-card p-5 lg:col-span-2">
-          <h2 className="text-base font-bold">Baca Al-Quran</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            114 surat lengkap dengan terjemahan, audio murottal, dan tafsir Indonesia.
-          </p>
-          <Button asChild variant="outline" className="mt-4 w-full">
-            <Link to="/quran">
-              <BookOpen className="mr-2 h-4 w-4" /> Buka Al-Quran
-            </Link>
-          </Button>
-        </div>
       </div>
 
     </AppShell>
