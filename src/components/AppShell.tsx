@@ -8,7 +8,7 @@ import {
   Settings as SettingsIcon,
   LogOut,
   Headset,
-  BookOpen,
+  
   Menu,
 } from "lucide-react";
 import { useAuth, isStaff, type AppRole } from "@/lib/auth";
@@ -27,7 +27,7 @@ const navItems: { to: string; label: string; icon: typeof Ticket; roles?: AppRol
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/tickets", label: "Daftar Tiket", icon: Ticket },
   { to: "/tickets/new", label: "Buat Tiket", icon: PlusCircle },
-  { to: "/quran", label: "Baca Quran", icon: BookOpen },
+  
   { to: "/users", label: "Manajemen User", icon: Users, roles: ["Administrator"] },
   { to: "/settings", label: "Pengaturan", icon: SettingsIcon, roles: ["Administrator"] },
 ];
@@ -63,7 +63,7 @@ export function AppShell({
   }
 
   const visible = navItems.filter((item) => !item.roles || (role && item.roles.includes(role)));
-  const tabs = navItems.slice(0, 4);
+  const tabs = navItems.slice(0, 3);
 
   return (
     <div className="min-h-screen bg-background lg:flex">
