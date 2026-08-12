@@ -154,107 +154,44 @@ function LoginPage() {
 
           <h1 className="text-3xl font-extrabold">Masuk ke akun Anda</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Gunakan username yang diberikan tim IT, atau daftar bila belum punya akun.
+            Gunakan username dan password yang diberikan tim IT.
           </p>
 
-          <Tabs defaultValue="login" className="mt-8">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Masuk</TabsTrigger>
-              <TabsTrigger value="register">Daftar</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="login">
-              <form onSubmit={handleLogin} className="surface-card mt-4 space-y-4 p-6">
-                <div className="space-y-2">
-                  <Label htmlFor="login-username">Username</Label>
-                  <div className="relative">
-                    <User2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                      id="login-username"
-                      className="pl-9"
-                      autoComplete="username"
-                      required
-                      value={loginForm.username}
-                      onChange={(e) =>
-                        setLoginForm((f) => ({ ...f, username: e.target.value }))
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="login-password">Password</Label>
-                  <div className="relative">
-                    <LockKeyhole className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                      id="login-password"
-                      type="password"
-                      className="pl-9"
-                      autoComplete="current-password"
-                      required
-                      value={loginForm.password}
-                      onChange={(e) =>
-                        setLoginForm((f) => ({ ...f, password: e.target.value }))
-                      }
-                    />
-                  </div>
-                </div>
-                <Button type="submit" className="w-full" disabled={busy}>
-                  {busy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  Masuk
-                </Button>
-              </form>
-            </TabsContent>
-
-            <TabsContent value="register">
-              <form onSubmit={handleRegister} className="surface-card mt-4 space-y-4 p-6">
-                <div className="space-y-2">
-                  <Label htmlFor="reg-nama">Nama Lengkap</Label>
-                  <Input
-                    id="reg-nama"
-                    required
-                    minLength={2}
-                    value={registerForm.nama}
-                    onChange={(e) => setRegisterForm((f) => ({ ...f, nama: e.target.value }))}
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="reg-username">Username</Label>
-                  <Input
-                    id="reg-username"
-                    required
-                    minLength={3}
-                    pattern="[a-zA-Z0-9._\-]+"
-                    value={registerForm.username}
-                    onChange={(e) =>
-                      setRegisterForm((f) => ({ ...f, username: e.target.value }))
-                    }
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="reg-password">Password</Label>
-                  <Input
-                    id="reg-password"
-                    type="password"
-                    required
-                    minLength={6}
-                    autoComplete="new-password"
-                    value={registerForm.password}
-                    onChange={(e) =>
-                      setRegisterForm((f) => ({ ...f, password: e.target.value }))
-                    }
-                  />
-                  <p className="text-xs text-muted-foreground">Minimal 6 karakter.</p>
-                </div>
-                <Button type="submit" className="w-full" disabled={busy}>
-                  {busy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  Daftar Akun
-                </Button>
-                <p className="text-xs text-muted-foreground">
-                  Akun pertama yang didaftarkan otomatis menjadi Administrator.
-                </p>
-              </form>
-            </TabsContent>
-          </Tabs>
+          <form onSubmit={handleLogin} className="surface-card mt-8 space-y-4 p-6">
+            <div className="space-y-2">
+              <Label htmlFor="login-username">Username</Label>
+              <div className="relative">
+                <User2 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="login-username"
+                  className="pl-9"
+                  autoComplete="username"
+                  required
+                  value={loginForm.username}
+                  onChange={(e) => setLoginForm((f) => ({ ...f, username: e.target.value }))}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="login-password">Password</Label>
+              <div className="relative">
+                <LockKeyhole className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="login-password"
+                  type="password"
+                  className="pl-9"
+                  autoComplete="current-password"
+                  required
+                  value={loginForm.password}
+                  onChange={(e) => setLoginForm((f) => ({ ...f, password: e.target.value }))}
+                />
+              </div>
+            </div>
+            <Button type="submit" className="w-full" disabled={busy}>
+              {busy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+              Masuk
+            </Button>
+          </form>
         </div>
       </section>
     </div>
