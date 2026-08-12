@@ -13,8 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as UsersRouteImport } from './routes/users'
-import { Route as QuranIndexRouteImport } from './routes/quran/index'
-import { Route as QuranNomorRouteImport } from './routes/quran/$nomor'
 import { Route as TicketsIndexRouteImport } from './routes/tickets/index'
 import { Route as TicketsIdRouteImport } from './routes/tickets/$id'
 import { Route as TicketsNewRouteImport } from './routes/tickets/new'
@@ -39,16 +37,6 @@ const UsersRoute = UsersRouteImport.update({
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
-const QuranIndexRoute = QuranIndexRouteImport.update({
-  id: '/quran/',
-  path: '/quran/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const QuranNomorRoute = QuranNomorRouteImport.update({
-  id: '/quran/$nomor',
-  path: '/quran/$nomor',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TicketsIndexRoute = TicketsIndexRouteImport.update({
   id: '/tickets/',
   path: '/tickets/',
@@ -70,10 +58,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
   '/users': typeof UsersRoute
-  '/quran/$nomor': typeof QuranNomorRoute
   '/tickets/$id': typeof TicketsIdRoute
   '/tickets/new': typeof TicketsNewRoute
-  '/quran/': typeof QuranIndexRoute
   '/tickets/': typeof TicketsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -81,10 +67,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
   '/users': typeof UsersRoute
-  '/quran/$nomor': typeof QuranNomorRoute
   '/tickets/$id': typeof TicketsIdRoute
   '/tickets/new': typeof TicketsNewRoute
-  '/quran': typeof QuranIndexRoute
   '/tickets': typeof TicketsIndexRoute
 }
 export interface FileRoutesById {
@@ -93,10 +77,8 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/settings': typeof SettingsRoute
   '/users': typeof UsersRoute
-  '/quran/$nomor': typeof QuranNomorRoute
   '/tickets/$id': typeof TicketsIdRoute
   '/tickets/new': typeof TicketsNewRoute
-  '/quran/': typeof QuranIndexRoute
   '/tickets/': typeof TicketsIndexRoute
 }
 export interface FileRouteTypes {
@@ -106,10 +88,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/settings'
     | '/users'
-    | '/quran/$nomor'
     | '/tickets/$id'
     | '/tickets/new'
-    | '/quran/'
     | '/tickets/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -117,10 +97,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/settings'
     | '/users'
-    | '/quran/$nomor'
     | '/tickets/$id'
     | '/tickets/new'
-    | '/quran'
     | '/tickets'
   id:
     | '__root__'
@@ -128,10 +106,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/settings'
     | '/users'
-    | '/quran/$nomor'
     | '/tickets/$id'
     | '/tickets/new'
-    | '/quran/'
     | '/tickets/'
   fileRoutesById: FileRoutesById
 }
@@ -140,10 +116,8 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   SettingsRoute: typeof SettingsRoute
   UsersRoute: typeof UsersRoute
-  QuranNomorRoute: typeof QuranNomorRoute
   TicketsIdRoute: typeof TicketsIdRoute
   TicketsNewRoute: typeof TicketsNewRoute
-  QuranIndexRoute: typeof QuranIndexRoute
   TicketsIndexRoute: typeof TicketsIndexRoute
 }
 
@@ -177,20 +151,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/quran/': {
-      id: '/quran/'
-      path: '/quran'
-      fullPath: '/quran/'
-      preLoaderRoute: typeof QuranIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/quran/$nomor': {
-      id: '/quran/$nomor'
-      path: '/quran/$nomor'
-      fullPath: '/quran/$nomor'
-      preLoaderRoute: typeof QuranNomorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/tickets/': {
       id: '/tickets/'
       path: '/tickets'
@@ -220,12 +180,20 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   SettingsRoute: SettingsRoute,
   UsersRoute: UsersRoute,
-  QuranNomorRoute: QuranNomorRoute,
   TicketsIdRoute: TicketsIdRoute,
   TicketsNewRoute: TicketsNewRoute,
-  QuranIndexRoute: QuranIndexRoute,
   TicketsIndexRoute: TicketsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
