@@ -1,0 +1,1 @@
+delete from public.tickets where ejob = 'EJOB/2026/07/001' and created_by is null;
