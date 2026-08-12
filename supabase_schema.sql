@@ -252,3 +252,39 @@ revoke all on function public.ticket_contact(uuid) from public, anon;
 grant execute on function public.has_role(uuid, public.app_role) to authenticated, service_role;
 grant execute on function public.is_staff(uuid) to authenticated, service_role;
 grant execute on function public.ticket_contact(uuid) to authenticated, service_role;
+
+
+-- ======================
+-- Seed: admin (email admin@admin.com)
+-- Tambahkan profile dan role Administrator untuk user auth yang memiliki email admin@admin.com.
+-- Catatan: pastikan auth.user untuk email ini sudah dibuat melalui Supabase Auth (Admin API atau Dashboard).
+-- Jangan menyimpan password plaintext di skema ini; buat user lewat Supabase Auth.
+-- ======================
+
+do $$
+declare
+  _uid uuid;
+begin
+  select id into _uid from auth.users where email = 'admin@admin.com' limit 1;
+
+  if _uid is null then
+    raise notice 'No auth.user found for email admin@admin.com. Create the user first via Supabase Auth (Admin API or Dashboard).';
+    return;
+  end if;
+
+  -- insert atau update profile
+  if not exists (select 1 from public.profiles where id = _uid) then
+    insert into public.profiles (id, username, nama, must_change_password, status, created_at, updated_at)
+    values (_uid, 'admin', 'Administrator', false, 'Active', now(), now());
+  else
+    update public.profiles
+    set username = 'admin', nama = 'Administrator', status = 'Active', updated_at = now()
+    where id = _uid;
+  end if;
+
+  -- berikan role Administrator
+  insert into public.user_roles (user_id, role, created_at)
+  values (_uid, 'Administrator'::public.app_role, now())
+  on conflict (user_id, role) do nothing;
+end
+$$;
