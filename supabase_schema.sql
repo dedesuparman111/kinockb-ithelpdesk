@@ -208,6 +208,63 @@ as $$
 $$;
 
 -- ============================================================
+-- TABEL: ticket_comments
+-- ============================================================
+create table if not exists public.ticket_comments (
+  id uuid primary key default gen_random_uuid(),
+  ticket_id uuid not null references public.tickets(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  author_name varchar,
+  body text not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists ticket_comments_ticket_id_idx
+  on public.ticket_comments (ticket_id, created_at desc);
+
+grant select, insert, update, delete on public.ticket_comments to authenticated;
+grant all on public.ticket_comments to service_role;
+
+alter table public.ticket_comments enable row level security;
+
+drop trigger if exists trg_ticket_comments_updated on public.ticket_comments;
+create trigger trg_ticket_comments_updated
+before update on public.ticket_comments
+for each row execute function public.set_updated_at();
+
+drop policy if exists ticket_comments_select on public.ticket_comments;
+create policy ticket_comments_select on public.ticket_comments
+  for select to authenticated
+  using (true);
+
+drop policy if exists ticket_comments_insert on public.ticket_comments;
+create policy ticket_comments_insert on public.ticket_comments
+  for insert to authenticated
+  with check (
+    user_id = auth.uid()
+    and not public.has_role(auth.uid(), 'User Public'::public.app_role)
+  );
+
+drop policy if exists ticket_comments_update_own on public.ticket_comments;
+create policy ticket_comments_update_own on public.ticket_comments
+  for update to authenticated
+  using (user_id = auth.uid() and not public.has_role(auth.uid(), 'User Public'::public.app_role))
+  with check (user_id = auth.uid());
+
+drop policy if exists ticket_comments_update_staff on public.ticket_comments;
+create policy ticket_comments_update_staff on public.ticket_comments
+  for update to authenticated
+  using (public.is_staff(auth.uid()))
+  with check (public.is_staff(auth.uid()));
+
+drop policy if exists ticket_comments_delete on public.ticket_comments;
+create policy ticket_comments_delete on public.ticket_comments
+  for delete to authenticated
+  using (user_id = auth.uid() or public.is_staff(auth.uid()));
+
+-- ============================================================
+
 -- TABEL: settings (satu baris, id = 1)
 -- ============================================================
 create table if not exists public.settings (
